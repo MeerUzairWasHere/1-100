@@ -37,4 +37,5 @@ async function startWorker() {
     }
 }
 
+
 startWorker();
