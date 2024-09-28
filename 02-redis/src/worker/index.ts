@@ -24,7 +24,7 @@ async function processSubmission(submission: string) {
 
     console.log(`Finished processing submission for problemId ${problemId}. Time taken: ${timeTaken} ms`);
     console.log(`=================================================`);
-    client.publish("problem_done", JSON.stringify({ problemId, status: "TLE" }));
+    client.publish("problem_done", JSON.stringify({ problemId, status: ["TLE", "Success"][Math.floor(Math.random() * 2)] }));
 }
 
 async function startWorker() {
