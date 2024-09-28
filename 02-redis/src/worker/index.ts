@@ -8,10 +8,22 @@ async function processSubmission(submission: string) {
     console.log(`Code: ${code}`);
     console.log(`Language: ${language}`);
     // Here you would add your actual processing logic
-
+    const startTime = new Date(); // Record the start time
     // Simulate processing delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    console.log(`Finished processing submission for problemId ${problemId}.`);
+
+   // Generate a random number of seconds between 0 and 15 (inclusive)
+    const seconds = Math.floor(Math.random() * 16);
+
+    // Simulate processing delay in milliseconds
+    await new Promise(resolve => setTimeout(resolve, seconds * 1000));
+
+    const endTime = new Date(); // Record the end time
+
+    // @ts-ignore
+    const timeTaken = endTime - startTime; // Calculate the time difference in milliseconds
+
+    console.log(`Finished processing submission for problemId ${problemId}. Time taken: ${timeTaken} ms`);
+    console.log(`=================================================`);
 }
 
 async function startWorker() {
