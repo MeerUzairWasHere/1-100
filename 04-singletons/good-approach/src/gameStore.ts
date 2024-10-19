@@ -7,25 +7,32 @@ interface Game {
 
 export class GameManager {
   games: Game[] = [];
-
-  constructor() {
+  private static instance: GameManager;
+  private constructor() {
     this.games = [];
   }
-  addGame(game: Game) {
+  static getInstance() {
+    if (GameManager.instance) {
+      return GameManager.instance;
+    }
+
+    GameManager.instance = new GameManager();
+    return GameManager.instance;
+  }
+
+  public addGame(game: Game) {
     this.games.push(game);
   }
 
-  getGames() {
+  public getGames() {
     return this.games;
   }
 
   // e5e7
-  addMove(gameId: string, move: string) {
+  public addMove(gameId: string, move: string) {
     const game = this.games.find((game) => game.id === gameId);
     if (game) {
       game.moves.push(move);
     }
   }
 }
-
-export const GameManager1 = new GameManager();
