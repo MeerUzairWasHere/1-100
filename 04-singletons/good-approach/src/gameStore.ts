@@ -10,7 +10,7 @@ export class GameManager {
   private static instance: GameManager;
   private constructor() {
     this.games = [];
-  }
+  } 
   static getInstance() {
     if (GameManager.instance) {
       return GameManager.instance;
