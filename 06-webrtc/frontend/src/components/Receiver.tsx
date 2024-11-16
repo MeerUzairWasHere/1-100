@@ -1,8 +1,12 @@
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 
-export const Receiver = () => {
+export const Receiver: React.FC = () => {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [isReadyToPlay, setIsReadyToPlay] = useState(false);
+
   useEffect(() => {
     const socket = new WebSocket("ws://localhost:8080");
+
     socket.onopen = () => {
       socket.send(
         JSON.stringify({
@@ -10,38 +14,55 @@ export const Receiver = () => {
         })
       );
     };
+
     startReceiving(socket);
   }, []);
 
   function startReceiving(socket: WebSocket) {
-    const video = document.createElement("video");
-    document.body.appendChild(video);
-
     const pc = new RTCPeerConnection();
-    pc.ontrack = (event) => {
-      video.srcObject = new MediaStream([event.track]);
-      video.play();
+
+    pc.ontrack = (event: RTCTrackEvent) => {
+      if (videoRef.current) {
+        videoRef.current.srcObject = new MediaStream([event.track]);
+        // Delay playing until user interaction
+        setIsReadyToPlay(true);
+      }
     };
 
-    socket.onmessage = (event) => {
+    socket.onmessage = (event: MessageEvent) => {
       const message = JSON.parse(event.data);
       if (message.type === "createOffer") {
-        pc.setRemoteDescription(message.sdp).then(() => {
-          pc.createAnswer().then((answer) => {
-            pc.setLocalDescription(answer);
-            socket.send(
-              JSON.stringify({
-                type: "createAnswer",
-                sdp: answer,
-              })
-            );
-          });
-        });
+        pc.setRemoteDescription(new RTCSessionDescription(message.sdp)).then(
+          () => {
+            pc.createAnswer().then((answer) => {
+              pc.setLocalDescription(answer);
+              socket.send(
+                JSON.stringify({
+                  type: "createAnswer",
+                  sdp: answer,
+                })
+              );
+            });
+          }
+        );
       } else if (message.type === "iceCandidate") {
-        pc.addIceCandidate(message.candidate);
+        pc.addIceCandidate(new RTCIceCandidate(message.candidate));
       }
     };
   }
 
-  return <div></div>;
+  const handlePlay = () => {
+    if (videoRef.current) {
+      videoRef.current.play().catch((error) => {
+        console.error("Playback failed:", error);
+      });
+    }
+  };
+
+  return (
+    <div>
+      <video ref={videoRef} autoPlay={false} playsInline controls></video>
+      {isReadyToPlay && <button onClick={handlePlay}>Start Video</button>}
+    </div>
+  );
 };

@@ -45,6 +45,7 @@ export const Sender = () => {
     };
 
     pc.onnegotiationneeded = async () => {
+      console.error("onnegotiateion needed");
       const offer = await pc.createOffer();
       await pc.setLocalDescription(offer);
       socket?.send(
@@ -66,6 +67,9 @@ export const Sender = () => {
       // this is wrong, should propogate via a component
       document.body.appendChild(video);
       stream.getTracks().forEach((track) => {
+        console.error("track added");
+        console.log(track);
+        console.log(pc);
         pc?.addTrack(track);
       });
     });
