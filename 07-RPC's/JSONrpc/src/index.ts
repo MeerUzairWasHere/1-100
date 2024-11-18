@@ -12,6 +12,13 @@ function add(a: number, b: number) {
   return a + b;
 }
 
+function sub(a: number, b: number) {
+  if (a > b) {
+    return a - b;
+  }
+  return b - a;
+}
+
 // Handle JSON-RPC requests
 app.post("/rpc", (req, res) => {
   const { jsonrpc, method, params, id } = req.body;
@@ -30,6 +37,9 @@ app.post("/rpc", (req, res) => {
   switch (method) {
     case "add":
       result = add(params[0], params[1]);
+      break;
+    case "sub":
+      result = sub(params[0], params[1]);
       break;
     default:
       res.status(404).json({
