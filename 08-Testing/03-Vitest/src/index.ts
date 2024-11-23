@@ -1,12 +1,6 @@
 import express from "express";
 import { z } from "zod";
-import { prismaClient } from "./db";
-import { vi } from "vitest";
-
-// Mocking the prismaClient
-vi.mock("./db", () => ({
-  prismaClient: { sum: { create: vi.fn() } },
-}));
+import { prismaClient } from "./__mocks__/db";
 
 export const app = express();
 app.use(express.json());
