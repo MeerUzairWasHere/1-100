@@ -19,9 +19,9 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        working-directory: 03-Vitest
+        working-directory: 08-Testing/03-Vitest
         run: npm install && npx prisma generate
 
       - name: Run tests
-        working-directory: 03-Vitest
+        working-directory: 08-Testing/03-Vitest
         run: npm run test
