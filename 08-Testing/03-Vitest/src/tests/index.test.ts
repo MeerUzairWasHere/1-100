@@ -88,7 +88,7 @@ describe("POST /minus", () => {
 
     expect(spy).toHaveBeenCalledWith({
       data: {
-        a: 3,
+        a: 33,
         b: 2,
         result: 1,
       },
