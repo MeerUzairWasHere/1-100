@@ -68,6 +68,7 @@ app.post("/minus", async (req: any, res: any) => {
     });
   }
 
+  
   const answer = parsedResponse.data.a - parsedResponse.data.b;
 
   await prismaClient.minus.create({
