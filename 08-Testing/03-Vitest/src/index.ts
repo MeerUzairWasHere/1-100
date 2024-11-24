@@ -73,7 +73,7 @@ app.post("/minus", async (req: any, res: any) => {
   await prismaClient.minus.create({
     data: {
       a: parsedResponse.data.a,
-      b: parsedResponse.data.b,
+      b: parsedResponse.data.a,
       result: answer,
     },
   });
