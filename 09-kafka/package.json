@@ -7,7 +7,6 @@
     "produce": "tsc -b && node dist/producer.js",
     "consume": "tsc -b && node dist/consumer.js",
     "produce:user": "tsc -b && node dist/producer-user.js"
-
   },
   "keywords": [],
   "author": "",
