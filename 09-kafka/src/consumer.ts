@@ -5,32 +5,12 @@ const kafka = new Kafka({
   brokers: ["localhost:9092"],
 });
 
-const producer = kafka.producer();
-
 const consumer = kafka.consumer({ groupId: "my-app3" });
 
 async function main() {
-  await producer.connect();
-  await producer.send({
-    topic: "quickstart-events",
-    messages: [
-      {
-        value: "hi there",
-      },
-    ],
-  });
-  await producer.send({
-    topic: "quickstart-events",
-    messages: [
-      {
-        value: "hi there",
-      },
-    ],
-  });
-
   await consumer.connect();
   await consumer.subscribe({
-    topic: "quickstart-events",
+    topic: "payment-done",
     fromBeginning: true,
   });
 
@@ -39,6 +19,8 @@ async function main() {
       console.log({
         offset: message.offset,
         value: message?.value?.toString(),
+        topic,
+        partition,  
       });
     },
   });
